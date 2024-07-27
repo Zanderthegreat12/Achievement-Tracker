@@ -1,44 +1,63 @@
-import { exchangeCodeForAccessToken, exchangeNpssoForCode, getTitleTrophies, getUserTitles, makeUniversalSearch } from "psn-api";
-import { writeFile } from "fs";
+import * as PSNapi from "psn-api";
+import * as fs from 'fs';
 
+
+const Npsso = ""
 
 async function ExtractPSNTrophies(name){
 
-    const accessCode = await exchangeNpssoForCode(Npsso);
-    console.log("accessCode");
-    const authorization = await exchangeCodeForAccessToken(accessCode);
-    console.log("authorization");
+    const accessCode = await PSNapi.exchangeNpssoForCode(Npsso);
+    const authorization = await PSNapi.exchangeCodeForAccessToken(accessCode);
 
-    const user = await makeUniversalSearch(authorization, name, "SocialAllAccounts");
-    console.log("UniSearch");
+    const user = await PSNapi.makeUniversalSearch(authorization, name, "SocialAllAccounts");
+    const accountId = user.domainResponses[0].results[0].socialMetadata.accountId;
+    const userTitles = await PSNapi.getUserTitles(authorization, accountId);
 
-    const accountId = user.domainResponse[0].results[0].socialMetadata.accountId;
-
-    const userTitles = await getUserTitles(authorization, accountId);
-    console.log("userTitles");
-
-    return userTitles;
-    
+  
     let games = [];
 
-    for (title.trophieTitles in userTitles){
-        const userGameTrophies = await getUserTrophiesEarnedForTitle(authorization, accountId, userGame.npCommunicationId);
-        const titleTrophies = await getTitleTrophies(authorization, userGame.npCommunicationId, "all", {npServiceName: "trophy"});
+    for (const userGame of userTitles.trophyTitles){
 
-        game = [];
-        game.append(title);
+        const userGameTrophies = await PSNapi.getUserTrophiesEarnedForTitle(authorization, accountId, userGame.npCommunicationId, "all", {npServiceName: "trophy"});
+        const titleTrophies = await PSNapi.getTitleTrophies(authorization, userGame.npCommunicationId, "all", {npServiceName: "trophy"});
 
+        let game = [];
+        game.push(userGame);
 
+        let trophies = []
+        for (const trophy of titleTrophies.trophies){
+          let JsonTrophy = [];
+          
+          const usertrophy = userGameTrophies.trophies.find(
+            (t) => trophy.trophyId === t.trophyId
+          )
+          JsonTrophy.push({
+            earned: usertrophy.earned ??  false,
+            earnedDate: usertrophy.earned ? trophy.earnedDateTime : "unearned".earnedDateTime,
+            trophyType: usertrophy.trophyType,
+            trophyRare: usertrophy.trohpyRare,
+            trophyEarnRate: usertrophy.trophyEarnRate,
+            trophyName: trophy.trophyName,
+            trophyDetail: trophy.trophyDetail,
+            trophyIcon: trophy.trophyIconUrl
+          })
+            trophies.push(JsonTrophy);
 
+        }
 
-        games.append(game);
+        game.push(trophies);
+        games.push(game);
     }
 
     return games;
 }
 
-let result = ExtractPSNTrophies("FeonixKing");
+let result = await ExtractPSNTrophies("FeonixKing");
 
-writeFile("userTitles.json", result, (err) => {
-    if (err) throw err;
-})
+fs.writeFile("games.json", JSON.stringify(result), (err) => {
+    if (err)
+      console.log(err);
+    else {
+      console.log("File written successfully\n");
+    }
+  });

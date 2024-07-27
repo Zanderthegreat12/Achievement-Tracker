@@ -1,5 +1,6 @@
 {
   "dependencies": {
     "psn-api": "^2.10.1"
-  }
+  },
+  "type": "module"
 }
