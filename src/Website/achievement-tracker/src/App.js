@@ -1,19 +1,32 @@
 import './App.css';
+import games from './games.json';
 
 function App() {
-
+  let gamesJson = fetch('./games.json').then((res) => {if(!res.ok){
+    throw new Error("games.json Does not exist");
+    }
+    return res.json();
+  })
+  console.log(gamesJson);
 
   return (
     <div>
       <h1>Video Game Tracker</h1>
-
-    <script type="text/javascript" src="App.js"></script>
-  <h2> The Legend of Heroes: Trails into Reverie </h2>
-<img src = "https://image.api.playstation.com/trophy/np/NPWR33790_00_00464047B556A610EE5164528DDA81A368A9E34381/80A0768BF61793EF3431910CAA2C6A320601E8A9.PNG" ></img>
-<p> ---progress bar---- 41% </p>
-<p> trophies : *Platnum trophy image* 0/1  *Gold trophy image* 0/2  *silver trophy image* 0/8 *bronze trophy image* 29/42 </p>
+      <GamesList/>
     </div>
   );
 }
+
+function GamesList(){
+
+  const gameList = games.map( (game) => 
+    <div>
+      <p>{game[0].trophyTitleName}</p>
+      <img src ={game[0].trophyTitleIconUrl}></img>
+    </div>)
+
+  return  <ul>{gameList}</ul>;
+}
+
 
 export default App;

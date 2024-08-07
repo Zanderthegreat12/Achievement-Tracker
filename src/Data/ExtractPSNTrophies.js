@@ -2,7 +2,7 @@ import * as PSNapi from "psn-api";
 import * as fs from 'fs';
 
 
-const Npsso = "qk947pBjP2VF3G29ZJ8Eyz1VjZ2Vq2ozWX5J6uXv2LAx6UotI4soDsipKhb6XA9m"
+const Npsso = ""
 
 async function ExtractPSNTrophies(name){
 
