@@ -3,12 +3,27 @@
   width: 330px;
 }
 
+.GameImage{
+  border-radius: 20px;
+}
+
 .GameOverview{
   justify-content: center;
   align-items: center;
   content: "";
   display: flex;  
-  background-color: aqua;
+
+}
+
+.ChildGameOverview{
+  background-color: rgb(63, 63, 63);
+  display: flex;
+  width: 750px;
+  padding: 10px;  
+  border-radius: 20px;
+  margin: 10px;
+  border: solid 3px rgb(50, 50, 235);
+  cursor: pointer;
 }
 
 .trophySect{
@@ -21,22 +36,57 @@
   width: 50px;
   text-align: center;
   align-items: center;
+  color: white;
 }
 
 .ParentProgress{
   height: 25px;
   width: '100%';
   background-color: rgb(221, 217, 217);
-  border-radius: 40;
+  border-radius: 40px;
   margin: 50;
 }
 .ChildProgress{
   height: 25px;
   background-color: rgb(50, 50, 235);
   text-align: right;
-  border-radius: 40;
+  border-radius: 10px;
 }
 
 .ProgressBarCSS{
-  padding-top: 63px;
+  padding-top: 73px;
+  
+}
+
+.ProgressText{
+  color: white;
+  padding-right: 5px;
+}
+
+.GameTitle{
+  color: white;
+  word-wrap: break-word;
+  text-align: center;
+  width: 400px;
+  font-size: 18px;
+  font-family: sans-serif;
+}
+
+.GameListCSS{
+  align-items: center;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.Background{
+  background-color: black;
+}
+
+.Title{
+  background-color: black;
+  padding: 30px;
+  margin: 0;
+  color: white;
+  text-align: center;
+  font-size: 50px;
 }
