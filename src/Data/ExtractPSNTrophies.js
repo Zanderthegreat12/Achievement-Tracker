@@ -31,12 +31,13 @@ async function ExtractPSNTrophies(name){
           const usertrophy = userGameTrophies.trophies.find(
             (t) => trophy.trophyId === t.trophyId
           )
+
           JsonTrophy.push({
             earned: usertrophy.earned ??  false,
-            earnedDate: usertrophy.earned ? trophy.earnedDateTime : "unearned".earnedDateTime,
+            earnedDate: usertrophy.earned ? usertrophy.earnedDateTime : "unearned".earnedDateTime,
             trophyType: usertrophy.trophyType,
-            trophyRare: usertrophy.trohpyRare,
-            trophyEarnRate: usertrophy.trophyEarnRate,
+            trophyRare: usertrophy.trophyRare,
+            trophyEarnedRate: usertrophy.trophyEarnedRate,
             trophyName: trophy.trophyName,
             trophyDetail: trophy.trophyDetail,
             trophyIcon: trophy.trophyIconUrl
