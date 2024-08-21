@@ -22,18 +22,24 @@ function AchievementList({game}){
     const AchieveList = game.map((achieve) =>
         <div className="GameOverview">
             <div className={earned(achieve[0].earned)}>
+            <div className="achievePercentParent">
             <div className="achieveSect">
                 <img src={achieve[0].trophyIcon} width="100px"></img>
             </div>
+            </div>
             <div className="achieveDescription">
-                <p>{achieve[0].trophyName}</p>   
+                <h4>{achieve[0].trophyName}</h4>   
                 <p>{achieve[0].trophyDetail}</p>
             </div>
+            <div className="achievePercentParent">
             <div className="achieveTime">
-                <p>{achieve[0].earnedDate}</p>
+                <p>{convertDate(achieve[0].earnedDate)}</p>
             </div>
+            </div>
+            <div className="achievePercentParent"> 
             <div className="achieveSect">
                 <img src={determineRare(achieve[0].trophyType)}  width="75px"></img>
+            </div>
             </div>
             <div className="achievePercentParent">
             <div className="achievePercentChild">
@@ -70,6 +76,17 @@ function earned(isEarned){
 
 function componentDidMount() {
     window.scrollTo(0, 0);
+}
+
+function convertDate(date){
+    if (date !== undefined){
+    const achievedate = new Date(date);
+    let achieveDateString = achievedate.toString();
+    let achieveDateArray = achieveDateString.split(" ");
+    let time = achievedate.toLocaleTimeString("en-us")
+    return achieveDateArray[1] + ", " + achieveDateArray[2] + " " + achieveDateArray[3] + " " + time;
+    }
+    return ""
 }
 
 export default Achievements;

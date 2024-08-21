@@ -103,6 +103,7 @@
 .achieveTime{
   float: left;
   width: 125px;
+  padding-left: 15px;
 }
 
 .achievePercentParent{
@@ -134,5 +135,10 @@
   width: 750px;
   padding: 10px;  
   border: solid 3px rgb(50, 50, 235);
-  filter: grayscale(1);
+  filter:grayscale(1);
+}
+
+::selection{
+  background-color: rgb(27, 27, 27);
+  color: white;
 }
