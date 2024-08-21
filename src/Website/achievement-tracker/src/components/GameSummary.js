@@ -6,7 +6,7 @@ function GameSummary({game}){
     return(
         <Link to="/achievements" state={{game: game}} style={{ textDecoration: 'none' }}>
 <div className = "GameOverview">
-        <div className = "ChildGameOverview" onClick={() => {console.log("hello")}}>
+        <div className = "ChildGameOverview">
           <div className = "imageSect">
             <img className = "GameImage" src ={game[0].trophyTitleIconUrl}></img>
           </div>

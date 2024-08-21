@@ -94,3 +94,45 @@
 .achieveSect{
   float:left;
 }
+
+.achieveDescription{
+  float: left;
+  width: 350px;
+}
+
+.achieveTime{
+  float: left;
+  width: 125px;
+}
+
+.achievePercentParent{
+  display: flex;
+  align-items: center;
+  float: left;
+  justify-content: center;
+}
+
+.achievePercentChild{
+  float: left;
+  vertical-align: middle;
+  text-align: center;
+  width: 100px;
+}
+
+.achieveChildEarned{
+  background-color: rgb(63, 63, 63);
+  display: flex;
+  width: 750px;
+  padding: 10px;  
+  border: solid 3px rgb(50, 50, 235);
+  color: white;
+}
+
+.achieveChildUnearned{
+  background-color: rgb(87, 86, 86);
+  display: flex;
+  width: 750px;
+  padding: 10px;  
+  border: solid 3px rgb(50, 50, 235);
+  filter: grayscale(1);
+}

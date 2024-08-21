@@ -7,8 +7,10 @@ function Achievements(){
 
     let AchieveGame = state.game;
 
+    componentDidMount();
+
     return(
-        <div>
+        <div className="Background">
             <GameSummary game = {AchieveGame} />
             <AchievementList game = {AchieveGame[1]} />
         </div>
@@ -19,21 +21,25 @@ function AchievementList({game}){
     console.log(game)
     const AchieveList = game.map((achieve) =>
         <div className="GameOverview">
-            <div className="achievSect">
-                <img src={achieve[0].trophyIcon}></img>
+            <div className={earned(achieve[0].earned)}>
+            <div className="achieveSect">
+                <img src={achieve[0].trophyIcon} width="100px"></img>
             </div>
-            <div className="achievSect">
+            <div className="achieveDescription">
                 <p>{achieve[0].trophyName}</p>   
                 <p>{achieve[0].trophyDetail}</p>
             </div>
-            <div className="achievSect">
+            <div className="achieveTime">
                 <p>{achieve[0].earnedDate}</p>
             </div>
-            <div className="achievSect">
-                <img src={determineRare(achieve[0].trophyType)}></img>
+            <div className="achieveSect">
+                <img src={determineRare(achieve[0].trophyType)}  width="75px"></img>
             </div>
-            <div className="achievSect">
+            <div className="achievePercentParent">
+            <div className="achievePercentChild">
                 <p>{achieve[0].trophyEarnedRate}%</p>
+            </div>
+            </div>
             </div>
         </div>);
 
@@ -52,6 +58,18 @@ function determineRare(Trophytype){
     } else {
         return "https://wrapup.playstation.com/_ipx/w_3840,q_100//assets/trophies/antman-trophy-platinum.png?url=/assets/trophies/antman-trophy-platinum.png&w=3840&q=100";
     }
+}
+
+function earned(isEarned){
+    if(isEarned){
+        return "achieveChildEarned";
+    } else {
+        return "achieveChildUnearned";
+    }
+}
+
+function componentDidMount() {
+    window.scrollTo(0, 0);
 }
 
 export default Achievements;
