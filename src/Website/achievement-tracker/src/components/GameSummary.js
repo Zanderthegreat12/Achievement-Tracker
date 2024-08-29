@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 function GameSummary({game}){
     return(
-        <Link to="/achievements" state={{game: game}} style={{ textDecoration: 'none' }}>
 <div className = "GameOverview">
+<Link to="/achievements" state={{game: game}} style={{ textDecoration: 'none' }}>
         <div className = "ChildGameOverview">
           <div className = "imageSect">
             <img className = "GameImage" src ={game[0].trophyTitleIconUrl}></img>
@@ -55,8 +55,8 @@ function GameSummary({game}){
             </div>
           </div>
         </div>
+        </Link>
       </div>
-      </Link>
     );
 }
 
