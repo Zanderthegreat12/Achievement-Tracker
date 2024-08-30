@@ -3,27 +3,34 @@ import GameSummary from "./GameSummary";
 
 function GamesList({games}){
     const [GAMES, setGames] = useState(games)
-    const [rend, setRend] = useState(false);
+    const [sort, setSort] = useState("");
 
     const gameList = GAMES.map( (game) => 
         <GameSummary game = {game}/>
       )
 
-      const SortGames = (sortFn) =>{
+      const SortGames = (sortFnString) =>{
+        let sortFn = findSortFn(sortFnString)
         GAMES.sort((a,b) => sortFn(a,b));
         setGames(GAMES);
-        setRend(!rend);
+        setSort(sortFnString);
       }
   
     return (
     <div className = "GameListCSS">
-      <button onClick={SortGames.bind(this, SortByName)}>Name (Asc)</button>
-      <button onClick={SortGames.bind(this, SortByNameR)}>Name (Des)</button> 
-      <button onClick={SortGames.bind(this, SortByPer)}>Completion Percent (Des)</button>
-      <button onClick={SortGames.bind(this, SortByPerR)}>Completion Percent (Asc)</button>
-      <button onClick={SortGames.bind(this, SortByRecent)}>Recently Earned (Des)</button>
-      <button onClick={SortGames.bind(this, SortByRecentR)}>Recently Earned (Asc)</button>
+      <div className="sortSelector">
+        <input></input>
+        <select  onChange={e => SortGames(e.target.value)}>
+          <option value={"recent"}>Recently Earned (Des)</option>
+          <option value={"recentR"} >Recently Earned (Asc)</option>
+          <option value={"nameR"} >Name (Des)</option> 
+          <option value={"name"}>Name (Asc)</option>
+          <option value={"per"} >Completion Percent (Des)</option>
+          <option value={"perR"}>Completion Percent (Asc)</option>
+        </select>
+      </div>
       {gameList}
+
       </div>);
   }
 
@@ -57,6 +64,21 @@ function GamesList({games}){
     return a[0].lastUpdatedDateTime.localeCompare(b[0].lastUpdatedDateTime)
   }
 
+  function findSortFn(sortFnString){
+    if ("name" === sortFnString){
+        return SortByName;
+    } else if ("nameR" === sortFnString){
+      return SortByNameR;
+    } else if ("per" === sortFnString){
+      return SortByPer;
+    } else if ("perR" === sortFnString){
+      return SortByPerR;
+    } else if ("recent" === sortFnString){
+      return SortByRecent;
+    } else {
+      return SortByRecentR;
+    }
+}
   
 
 

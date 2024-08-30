@@ -142,3 +142,9 @@
   background-color: rgb(27, 27, 27);
   color: white;
 }
+.sortSelector{
+  justify-content: center;
+  align-items: center;
+  content: "";
+  display: flex;  
+}
