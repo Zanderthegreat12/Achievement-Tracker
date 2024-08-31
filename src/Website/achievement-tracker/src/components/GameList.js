@@ -35,6 +35,11 @@ function GamesList({games}){
         e.target.value = "";
       }
     }
+
+    if(sort === ""){
+      filteredGames.sort((a,b) => SortByRecent(a,b));
+    }
+
     if (filteredGames.length !== 0){
     return (
     <div className = "GameListCSS">
