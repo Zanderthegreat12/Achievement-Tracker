@@ -4,23 +4,44 @@ import GameSummary from "./GameSummary";
 function GamesList({games}){
     const [GAMES, setGames] = useState(games)
     const [sort, setSort] = useState("");
+    const [filteredGames, setfilteredGames] = useState(games);
+    const [searchResult, setsearchResult] = useState("");
 
-    const gameList = GAMES.map( (game) => 
+    const gameList = filteredGames.map( (game) => 
         <GameSummary game = {game}/>
       )
 
-      const SortGames = (sortFnString) =>{
+    const SortGames = (sortFnString) =>{
         let sortFn = findSortFn(sortFnString)
         GAMES.sort((a,b) => sortFn(a,b));
         setGames(GAMES);
         setSort(sortFnString);
       }
-  
+
+    const filterGames = (e) => {
+      if (e.keyCode === 13){
+        let search = e.target.value;
+        if (search !== ""){
+          search = search.toLowerCase();
+          const filterGames = GAMES.filter((game) => {
+            let gameName = game[0].trophyTitleName.toLowerCase();
+            return gameName.includes(search);
+          })
+          setfilteredGames(filterGames);
+        } else {
+          setfilteredGames(GAMES);
+        }
+        setsearchResult(search);
+        e.target.value = "";
+      }
+    }
+    if (filteredGames.length !== 0){
     return (
     <div className = "GameListCSS">
       <div className="sortSelector">
-        <input></input>
-        <select  onChange={e => SortGames(e.target.value)}>
+      <input className="search" onKeyDown={filterGames}></input>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT--W18wy6a2ieVL6AoUwTx7OwzuY1-ncqVeA&s" width="21px"></img>
+        <select className="sort" onChange={e => SortGames(e.target.value)}>
           <option value={"recent"}>Recently Earned (Des)</option>
           <option value={"recentR"} >Recently Earned (Asc)</option>
           <option value={"nameR"} >Name (Des)</option> 
@@ -32,6 +53,24 @@ function GamesList({games}){
       {gameList}
 
       </div>);
+    } else {
+      return (
+        <div className = "GameListCSS">
+          <div className="sortSelector">
+            <input className="search" onKeyDown={filterGames}></input>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT--W18wy6a2ieVL6AoUwTx7OwzuY1-ncqVeA&s" width="21px"></img>
+            <select className="sort"  onChange={e => SortGames(e.target.value)}>
+              <option value={"recent"}>Recently Earned (Des)</option>
+              <option value={"recentR"} >Recently Earned (Asc)</option>
+              <option value={"nameR"} >Name (Des)</option> 
+              <option value={"name"}>Name (Asc)</option>
+              <option value={"per"} >Completion Percent (Des)</option>
+              <option value={"perR"}>Completion Percent (Asc)</option>
+            </select>
+          </div>
+          <p className="text"> No results found for: &nbsp; <b> {" "+searchResult}</b> </p>
+          </div>);
+    }
   }
 
   function SortByName(a,b){
@@ -79,7 +118,6 @@ function GamesList({games}){
       return SortByRecentR;
     }
 }
-  
 
 
-  export default GamesList;
+export default GamesList;

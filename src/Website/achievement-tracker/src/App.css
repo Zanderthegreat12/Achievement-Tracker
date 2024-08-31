@@ -148,3 +148,38 @@
   content: "";
   display: flex;  
 }
+
+.text{
+  color: white;
+  justify-content: center;
+  align-items: center;
+  content: "";
+  display: flex; 
+}
+
+body{
+  background-color:black
+}
+
+.sort{
+  margin-left: 20px;
+  height: 25px;
+  font-family: sans-serif;
+  border-radius: 10px;
+}
+
+.search{
+  width: 500px;
+  height: 20px;
+  margin-right: 5px;
+  font-family: sans-serif;
+  border-radius: 10px;
+}
+
+.sortAchieve{
+  margin-left: 600px;
+  height: 25px;
+  font-family: sans-serif;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}

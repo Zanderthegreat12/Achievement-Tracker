@@ -12,10 +12,7 @@ function Achievements(){
     const [Achievements, setAchievements] = useState(AchieveGame[1])
     const [sort, setSort] = useState("");
 
-
-
     componentDidMount();
-
     
     const SortGames = (sortFnString) =>{
         let sortFn = findSortFn(sortFnString)
@@ -30,9 +27,9 @@ function Achievements(){
 
     return(
         <div className="Background">
-            <GameSummary game = {AchieveGame} />
+            <GameSummary className="noPoint" game = {AchieveGame}/>
             <div className="sortSelector">
-                <select  onChange={e => SortGames(e.target.value)}>
+                <select className="sortAchieve"  onChange={e => SortGames(e.target.value)}>
                     <option value={"earned"} >Default </option> 
                     <option value={"trophies"}>Trophy Rarity</option>
                     <option value={"perR"} > Earn Rate (Asc)</option>
