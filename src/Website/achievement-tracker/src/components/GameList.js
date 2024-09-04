@@ -1,5 +1,6 @@
 import { useState } from "react";
 import GameSummary from "./GameSummary";
+import SteamGameSummary from "./SteamGameSummary";
 
 function GamesList({games}){
     const [GAMES, setGames] = useState(games)
@@ -7,9 +8,13 @@ function GamesList({games}){
     const [filteredGames, setfilteredGames] = useState(games);
     const [searchResult, setsearchResult] = useState("");
 
-    const gameList = filteredGames.map( (game) => 
-        <GameSummary game = {game}/>
-      )
+    const gameList = filteredGames.map( (game) => {
+        if(game[0].hasOwnProperty("trophySetVersion")){
+          return <GameSummary game = {game}/>
+        } else {
+          return <SteamGameSummary game = {game}/>
+        }
+      })
 
     const SortGames = (sortFnString) =>{
         let sortFn = findSortFn(sortFnString)

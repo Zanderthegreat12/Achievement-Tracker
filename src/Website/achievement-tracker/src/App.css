@@ -55,6 +55,16 @@
 
 .ProgressBarCSS{
   padding-top: 73px;
+}
+
+.ProgressBarCSSSteam{
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+
+.ribbon{
+ transform: translate(340px, -45px);
   
 }
 
@@ -72,10 +82,25 @@
   font-family: sans-serif;
 }
 
+.GameTitleSteam{
+  color: white;
+  word-wrap: break-word;
+  text-align: center;
+  width: 400px;
+  font-size: 18px;
+  font-family: sans-serif;
+  padding-top: 25px;
+}
+
 .GameListCSS{
   align-items: center;
   margin: 0 auto;
   justify-content: center;
+}
+
+.SteamRight{
+  justify-content: center;
+  align-items: center; 
 }
 
 .Background{

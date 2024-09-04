@@ -33,7 +33,7 @@ async function ExtractSteamAchievements(steamId){
 
             let totalAchieve = 0;
             let mostRecentAchieve = 0;
-        
+
 
             for (const achieve of GameSchema.game.availableGameStats.achievements){
 
@@ -48,12 +48,12 @@ async function ExtractSteamAchievements(steamId){
                 let date = "";
                 if (singlePlayerAchieve.achieved === 1){
                     achieved = true;
-                    date = new Date(Number(singlePlayerAchieve.unlocktime));
+                    date = new Date(Number(singlePlayerAchieve.unlocktime) * 1000).toISOString();
                     totalAchieve++;
                 }
 
                 if (Number(singlePlayerAchieve.unlocktime) > mostRecentAchieve){
-                    mostRecentAchieve = Number(singleAchievePercent.unlocktime);
+                    mostRecentAchieve = Number(singlePlayerAchieve.unlocktime)* 1000;
                 }
 
                 
@@ -67,23 +67,26 @@ async function ExtractSteamAchievements(steamId){
                     earnedDate: date
                 })
             }
+                if (mostRecentAchieve !== 0){
+                let percentage = Math.floor(totalAchieve / Number(GameSchema.game.availableGameStats.achievements.length) * 100);
 
-            let percentage = totalAchieve / Number(GameSchema.game.availableGameStats.achievements.length);
+                let name = GameInfo[userGame.appid].data.name;
+                let url = GameInfo[userGame.appid].data.header_image;
 
-            let name = GameInfo[userGame.appid].data.name;
-            let url = GameInfo[userGame.appid].data.header_image;
+                const GameDate = new Date(mostRecentAchieve);
 
-            let gameInfo = []
-            gameInfo.push({
-                trophyTitleName: name,
-                trophyTitleIconUrl: url,
-                numAchievements: GameSchema.game.availableGameStats.achievements.length,
-                progress: percentage,
-                lastUpdatedDateTime: Date(mostRecentAchieve)
-            })
+                let gameInfo = []
+                gameInfo.push({
+                    trophyTitleName: name,
+                    trophyTitleIconUrl: url,
+                    numAchievements: GameSchema.game.availableGameStats.achievements.length,
+                    progress: percentage,
+                    lastUpdatedDateTime: GameDate
+                })
 
-            gameInfo.push(gameAchievements);
-            games.push(gameInfo);
+                gameInfo.push(gameAchievements);
+                games.push(gameInfo);
+            }
         }
 
     }
