@@ -1,30 +1,28 @@
 
-function AchievementList({game}){
+
+function AchievementList({game, trophy}){
+
     const AchieveList = game.map((achieve) =>
         <div className="GameOverview">
-            <div className={earned(achieve[0].earned)}>
+            <div className={earned(achieve.earned)}>
             <div className="achievePercentParent">
             <div className="achieveSect">
-                <img src={achieve[0].trophyIcon} width="100px"></img>
+                <img src={achieve.trophyIcon} width="100px"></img>
             </div>
             </div>
             <div className="achieveDescription">
-                <h4>{achieve[0].trophyName}</h4>   
-                <p>{achieve[0].trophyDetail}</p>
+                <h4>{achieve.trophyName}</h4>   
+                <p>{achieve.trophyDetail}</p>
             </div>
             <div className="achievePercentParent">
             <div className="achieveTime">
-                <p>{convertDate(achieve[0].earnedDate)}</p>
+                <p>{convertDate(achieve.earnedDate)}</p>
             </div>
             </div>
-            <div className="achievePercentParent"> 
-            <div className="achieveSect">
-                <img src={determineRare(achieve[0].trophyType)}  width="75px"></img>
-            </div>
-            </div>
+            {displaytrophies(trophy,achieve)}
             <div className="achievePercentParent">
             <div className="achievePercentChild">
-                <p>{achieve[0].trophyEarnedRate}%</p>
+                <p>{Math.round(achieve.trophyEarnedRate*10)/10}%</p>
             </div>
             </div>
             </div>
@@ -34,6 +32,19 @@ function AchievementList({game}){
         <div>{AchieveList}</div>
     )
 }
+
+function displaytrophies(trophies, achieve){
+    if (trophies){
+        return (<div className="achievePercentParent"> 
+            <div className="achieveSect">
+                <img src={determineRare(achieve.trophyType)}  width="75px"></img>
+            </div>
+            </div>)
+    } else {
+        return ;
+    }
+}
+
 
 function determineRare(Trophytype){
     if(Trophytype === "bronze"){
@@ -55,7 +66,7 @@ function earned(isEarned){
     }
 }
 function convertDate(date){
-    if (date !== undefined){
+    if (date !== undefined && date !== ""){
     const achievedate = new Date(date);
     let achieveDateString = achievedate.toString();
     let achieveDateArray = achieveDateString.split(" ");

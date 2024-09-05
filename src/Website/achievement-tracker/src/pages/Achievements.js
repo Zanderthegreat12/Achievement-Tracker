@@ -2,45 +2,86 @@ import { useLocation  } from "react-router-dom";
 import { useState } from "react";
 import GameSummary from "../components/GameSummary";
 import AchievementList from "../components/AchievmentList";
+import SteamGameSummary from "../components/SteamGameSummary";
 
 function Achievements(){
     const location = useLocation();
     const state = location.state;
 
     let AchieveGame = state.game;
+    let type = state.origin;
+    let trophy = ""
+
+    if (type === "PSN"){
+        trophy = true;
+    } else {
+        trophy = false;
+    }
 
     const [Achievements, setAchievements] = useState(AchieveGame[1])
     const [sort, setSort] = useState("");
 
     componentDidMount();
     
-    const SortGames = (sortFnString) =>{
-        let sortFn = findSortFn(sortFnString)
+    // const SortGames = (sortFnString) =>{
+    //     let sortFn = findSortFn(sortFnString)
         
-        Achievements.sort((a,b) => sortFn(a,b));
-        setAchievements(Achievements);
-        setSort(sortFnString);
-      }
-    if (sort === ""){
+    //     Achievements.sort((a,b) => sortFn(a,b));
+    //     setAchievements(Achievements);
+    //     setSort(sortFnString);
+    //   }
+
+    if (sort === "" && type === "PSN"){
         Achievements.sort((a,b) => SortByEarned(a,b))
+    } else if (sort === "" && type === "Steam"){
+       Achievements.sort((a,b) => SortByPer(a,b));
     }
 
     return(
         <div className="Background">
-            <GameSummary className="noPoint" game = {AchieveGame}/>
+            {GameType(type, AchieveGame)}
             <div className="sortSelector">
-                <select className="sortAchieve"  onChange={e => SortGames(e.target.value)}>
+                {SortType(type, Achievements, setAchievements, setSort)}
+            </div>
+            <AchievementList game = {AchieveGame[1]} trophy={trophy}/>
+        </div>
+    )
+}
+
+function GameType(type, AchieveGame){
+    if (type === "PSN"){
+        return ( <GameSummary game = {AchieveGame}/>)
+    } else if (type === "Steam"){
+        return (<SteamGameSummary game = {AchieveGame}/>)
+    }
+}
+
+function SortGames(sortFnString, Achievements, setAchievements, setSort){
+    let sortFn = findSortFn(sortFnString)
+        
+    Achievements.sort((a,b) => sortFn(a,b));
+    setAchievements(Achievements);
+    setSort(sortFnString);
+}
+
+function SortType(type, Achievements, setAchievements, setSort){
+    if (type === "PSN"){
+        return(<select className="sortAchieve"  onChange={e => SortGames(e.target.value, Achievements, setAchievements, setSort)}>
                     <option value={"earned"} >Default </option> 
                     <option value={"trophies"}>Trophy Rarity</option>
                     <option value={"perR"} > Earn Rate (Asc)</option>
                     <option value={"per"}> Earn Rate (Des)</option>
                     <option value={"TimeR"}>Recently Earned (Asc)</option>
                     <option value={"Time"} >Recently Earned (Des)</option>
-                </select>
-            </div>
-            <AchievementList game = {AchieveGame[1]} />
-        </div>
-    )
+    </select>);
+    } else if (type === "Steam"){
+        return(<select className="sortAchieve"  onChange={e => SortGames(e.target.value, Achievements, setAchievements, setSort)}>
+            <option value={"per"}> Earn Rate (Des)</option>
+            <option value={"perR"} > Earn Rate (Asc)</option>
+            <option value={"steamTime"}> Recently Earned (Asc)</option>
+            <option value={"steamTimeR"}> Recently Earned (Asc)</option>
+        </select>);
+    }
 }
 
 function componentDidMount() {
@@ -48,64 +89,88 @@ function componentDidMount() {
 }
 
 function SortByTrophies(a,b){
-    if (TrophyValue(a[0].trophyType) - TrophyValue(b[0].trophyType) === 0){
-        if(EarnedValue(a[0].earned) - EarnedValue(b[0].earned) === 0){
-            if (a[0].trophyEarnedRate - b[0].trophyEarnedRate === 0){
-                return  a[0].trophyName.localeCompare(b[0].trophyName)
+    if (TrophyValue(a.trophyType) - TrophyValue(b.trophyType) === 0){
+        if(EarnedValue(a.earned) - EarnedValue(b.earned) === 0){
+            if (a.trophyEarnedRate - b.trophyEarnedRate === 0){
+                return  a.trophyName.localeCompare(b.trophyName)
             } else {
-                return a[0].trophyEarnedRate - b[0].trophyEarnedRate;
+                return a.trophyEarnedRate - b.trophyEarnedRate;
             }
         } else {
-            return -(EarnedValue(a[0].earned) - EarnedValue(b[0].earned));
+            return -(EarnedValue(a.earned) - EarnedValue(b.earned));
         } 
     } else {
-        return -(TrophyValue(a[0].trophyType) - TrophyValue(b[0].trophyType));
+        return -(TrophyValue(a.trophyType) - TrophyValue(b.trophyType));
     }
 }
 
 function SortByPer(a,b){
-    if ( -(a[0].trophyEarnedRate - b[0].trophyEarnedRate) === 0){
-      return -a[0].trophyName.localeCompare(b[0].trophyName)
+    if ( -(a.trophyEarnedRate - b.trophyEarnedRate) === 0){
+      return -a.trophyName.localeCompare(b.trophyName)
     }
-    return -(a[0].trophyEarnedRate - b[0].trophyEarnedRate);
+    return -(a.trophyEarnedRate - b.trophyEarnedRate);
 }
 
 function SortByPerR(a,b){
-    if ( (a[0].trophyEarnedRate - b[0].trophyEarnedRate) === 0){
-      return a[0].trophyName.localeCompare(b[0].trophyName)
+    if ( (a.trophyEarnedRate - b.trophyEarnedRate) === 0){
+      return a.trophyName.localeCompare(b.trophyName)
     }
-    return (a[0].trophyEarnedRate - b[0].trophyEarnedRate);
+    return (a.trophyEarnedRate - b.trophyEarnedRate);
 }
 
 function SortByEarned(a,b){
-    if(EarnedValue(a[0].earned - EarnedValue(b[0].earned) == 0)){
+    if(EarnedValue(a.earned - EarnedValue(b.earned) == 0)){
         return SortByTrophies(a,b)
     } else {
-        return -(EarnedValue(a[0].earned) - EarnedValue(b[0].earned));
+        return -(EarnedValue(a.earned) - EarnedValue(b.earned));
     }
 }
 
 function SortByTime(a,b){
-    if(EarnedValue(a[0].earned - EarnedValue(b[0].earned) === 0)){
-        if (EarnedValue(a[0].earned) === 0){
+    if(EarnedValue(a.earned - EarnedValue(b.earned) === 0)){
+        if (EarnedValue(a.earned) === 0){
             return SortByTrophies(a,b);
         } else {
-            return -a[0].earnedDate.localeCompare(b[0].earnedDate)
+            return -a.earnedDate.localeCompare(b.earnedDate)
         }
     } else {
-        return -(EarnedValue(a[0].earned) - EarnedValue(b[0].earned));
+        return -(EarnedValue(a.earned) - EarnedValue(b.earned));
     }
 }
 
 function SortByTimeR(a,b){
-    if(EarnedValue(a[0].earned - EarnedValue(b[0].earned) === 0)){
-        if (EarnedValue(a[0].earned) === 0){
+    if(EarnedValue(a.earned - EarnedValue(b.earned) === 0)){
+        if (EarnedValue(a.earned) === 0){
             return SortByTrophies(a,b);
         } else {
-            return a[0].earnedDate.localeCompare(b[0].earnedDate)
+            return a.earnedDate.localeCompare(b.earnedDate)
         }
     } else {
-        return -(EarnedValue(a[0].earned) - EarnedValue(b[0].earned));
+        return -(EarnedValue(a.earned) - EarnedValue(b.earned));
+    }
+}
+
+function SortBySteamTime(a,b){
+    if(EarnedValue(a.earned - EarnedValue(b.earned) === 0)){
+        if (EarnedValue(a.earned) === 0){
+            return SortByPer(a,b);
+        } else {
+            return -a.earnedDate.localeCompare(b.earnedDate)
+        }
+    } else {
+        return -(EarnedValue(a.earned) - EarnedValue(b.earned));
+    }
+}
+
+function SortBySteamTimeR(a,b){
+    if(EarnedValue(a.earned - EarnedValue(b.earned) === 0)){
+        if (EarnedValue(a.earned) === 0){
+            return SortByPer(a,b);
+        } else {
+            return a.earnedDate.localeCompare(b.earnedDate)
+        }
+    } else {
+        return -(EarnedValue(a.earned) - EarnedValue(b.earned));
     }
 }
 
@@ -140,8 +205,12 @@ function findSortFn(sortFnString){
       return SortByPer;
     } else if ("Time" === sortFnString){
       return SortByTime;
-    } else {
+    } else if ("TimeR" === sortFnString) {
       return SortByTimeR;
+    } else if ("steamTime" === sortFnString){
+        return SortBySteamTime
+    } else {
+        return SortBySteamTimeR
     }
 }
 

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function GameSummary({game}){
     return(
 <div className = "GameOverview">
-<Link to="/achievements" state={{game: game}} style={{ textDecoration: 'none' }}>
+<Link to="/achievements" state={{game: game, origin: "PSN"}} style={{ textDecoration: 'none' }}>
         <div className = "ChildGameOverview">
           <div className = "imageSect">
             <img className = "GameImage" src ={game[0].trophyTitleIconUrl}></img>
