@@ -22,14 +22,6 @@ function Achievements(){
     const [sort, setSort] = useState("");
 
     componentDidMount();
-    
-    // const SortGames = (sortFnString) =>{
-    //     let sortFn = findSortFn(sortFnString)
-        
-    //     Achievements.sort((a,b) => sortFn(a,b));
-    //     setAchievements(Achievements);
-    //     setSort(sortFnString);
-    //   }
 
     if (sort === "" && type === "PSN"){
         Achievements.sort((a,b) => SortByEarned(a,b))
@@ -50,9 +42,9 @@ function Achievements(){
 
 function GameType(type, AchieveGame){
     if (type === "PSN"){
-        return ( <GameSummary game = {AchieveGame}/>)
+        return ( <GameSummary game = {AchieveGame} page={["GameOverviewAchievePage","ChildGameOverviewAchievePage"]}/>)
     } else if (type === "Steam"){
-        return (<SteamGameSummary game = {AchieveGame}/>)
+        return (<SteamGameSummary game = {AchieveGame} page = {["GameOverviewAchievePage","ChildGameOverviewAchievePage"]}/>)
     }
 }
 

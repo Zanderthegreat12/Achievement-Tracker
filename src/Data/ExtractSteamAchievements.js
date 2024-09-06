@@ -52,7 +52,7 @@ async function ExtractSteamAchievements(steamId){
                     totalAchieve++;
                 }
 
-                if (Number(singlePlayerAchieve.unlocktime) > mostRecentAchieve){
+                if (Number(singlePlayerAchieve.unlocktime) * 1000 > mostRecentAchieve){
                     mostRecentAchieve = Number(singlePlayerAchieve.unlocktime)* 1000;
                 }
 
@@ -80,6 +80,8 @@ async function ExtractSteamAchievements(steamId){
                     trophyTitleName: name,
                     trophyTitleIconUrl: url,
                     numAchievements: GameSchema.game.availableGameStats.achievements.length,
+                    numAchievementsEarned: totalAchieve,
+                    totalPlaytime: userGame.playtime_forever,
                     progress: percentage,
                     lastUpdatedDateTime: GameDate
                 })

@@ -15,6 +15,14 @@
 
 }
 
+.GameOverviewAchievePage{
+  justify-content: center;
+  align-items: center;
+  content: "";
+  display: flex;  
+  cursor: default;
+}
+
 .ChildGameOverview{
   background-color: rgb(63, 63, 63);
   display: flex;
@@ -26,9 +34,31 @@
   cursor: pointer;
 }
 
+.ChildGameOverviewAchievePage{
+  background-color: rgb(63, 63, 63);
+  display: flex;
+  width: 750px;
+  padding: 10px;  
+  border-radius: 20px;
+  margin: 10px;
+  border: solid 3px rgb(50, 50, 235);
+  cursor: default;
+}
+
+
+
 .trophySect{
   float: left;
   width: 100px;
+  align-items: center;
+  justify-self: center;
+  display: flex;
+}
+
+.GameMiddleSect{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .trophySubSect{
@@ -54,13 +84,9 @@
 }
 
 .ProgressBarCSS{
-  padding-top: 73px;
+  padding-top: 20px;
 }
 
-.ProgressBarCSSSteam{
-  padding-top: 10px;
-  padding-left: 10px;
-}
 
 
 .ribbon{
@@ -96,11 +122,6 @@
   align-items: center;
   margin: 0 auto;
   justify-content: center;
-}
-
-.SteamRight{
-  justify-content: center;
-  align-items: center; 
 }
 
 .Background{
@@ -195,7 +216,7 @@ body{
 }
 
 .search{
-  width: 500px;
+  width: 400px;
   height: 20px;
   margin-right: 5px;
   font-family: sans-serif;

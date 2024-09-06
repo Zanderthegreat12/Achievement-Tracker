@@ -4,44 +4,71 @@ import SteamGameSummary from "./SteamGameSummary";
 
 function GamesList({games}){
     const [GAMES, setGames] = useState(games)
-    const [sort, setSort] = useState("");
+    const [sort, setSort] = useState("recent");
     const [filteredGames, setfilteredGames] = useState(games);
     const [searchResult, setsearchResult] = useState("");
+    const [gameType, setgameType] = useState("all")
 
+    
+    
+    
     const gameList = filteredGames.map( (game) => {
         if(game[0].hasOwnProperty("trophySetVersion")){
-          return <GameSummary game = {game}/>
+          return <GameSummary game = {game} page={["GameOverview","ChildGameOverview"]} />
         } else {
-          return <SteamGameSummary game = {game}/>
+          return <SteamGameSummary game = {game} page={["GameOverview","ChildGameOverview"]}/>
         }
       })
 
     const SortGames = (sortFnString) =>{
         let sortFn = findSortFn(sortFnString)
-        GAMES.sort((a,b) => sortFn(a,b));
-        setGames(GAMES);
+        filteredGames.sort((a,b) => sortFn(a,b));
+        setfilteredGames(filteredGames);
         setSort(sortFnString);
       }
 
-    const filterGames = (e) => {
+    const filterGames = (e, type) => {
       if (e.keyCode === 13){
         let search = e.target.value;
-        if (search !== ""){
-          search = search.toLowerCase();
-          const filterGames = GAMES.filter((game) => {
-            let gameName = game[0].trophyTitleName.toLowerCase();
-            return gameName.includes(search);
-          })
-          setfilteredGames(filterGames);
-        } else {
-          setfilteredGames(GAMES);
-        }
+        findGamebyWord(search, type)
         setsearchResult(search);
-        e.target.value = "";
+        //e.target.value = "";
       }
     }
 
-    if(sort === ""){
+    const findGamebyWord = (search, type) =>{
+      if (search !== ""){
+        search = search.toLowerCase();
+        const filterGames = GAMES.filter((game) => {
+          let gameName = game[0].trophyTitleName.toLowerCase();
+          return gameName.includes(search);
+        })
+        filterGamesByType(type, filterGames)
+      } else {
+        filterGamesByType(type, GAMES)
+      }
+    }
+
+    const filterGamesByType = (type, fg) => {
+      if (type === "PSN"){
+        const filterGames = fg.filter( (game) => {
+          return !game[0].hasOwnProperty("totalPlaytime");
+        })
+        setfilteredGames(filterGames);
+        setgameType("PSN")
+      } else if (type === "Steam"){
+        const filterGames = fg.filter( (game) => {
+          return game[0].hasOwnProperty("totalPlaytime");
+        })
+        setfilteredGames(filterGames);
+        setgameType("Steam")
+      } else {
+        setfilteredGames(fg);
+        setgameType("add")
+      }
+    }
+
+    if(sort === "recent"){
       filteredGames.sort((a,b) => SortByRecent(a,b));
     }
 
@@ -49,15 +76,20 @@ function GamesList({games}){
     return (
     <div className = "GameListCSS">
       <div className="sortSelector">
-      <input className="search" onKeyDown={filterGames}></input>
+      <input className="search" onKeyDown={e => {filterGames(e, gameType)}}></input>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT--W18wy6a2ieVL6AoUwTx7OwzuY1-ncqVeA&s" width="21px"></img>
-        <select className="sort" onChange={e => SortGames(e.target.value)}>
+        <select className="sort" onChange={e => {SortGames(e.target.value)}}>
           <option value={"recent"}>Recently Earned (Des)</option>
           <option value={"recentR"} >Recently Earned (Asc)</option>
           <option value={"nameR"} >Name (Des)</option> 
           <option value={"name"}>Name (Asc)</option>
           <option value={"per"} >Completion Percent (Des)</option>
           <option value={"perR"}>Completion Percent (Asc)</option>
+        </select>
+        <select className="sort" onChange={e => {findGamebyWord(searchResult, e.target.value)}}>
+          <option value={"All"}> All Games</option>
+          <option value={"Steam"} > Steam</option>
+          <option value={"PSN"} >PSN</option> 
         </select>
       </div>
       {gameList}
@@ -76,6 +108,11 @@ function GamesList({games}){
               <option value={"name"}>Name (Asc)</option>
               <option value={"per"} >Completion Percent (Des)</option>
               <option value={"perR"}>Completion Percent (Asc)</option>
+            </select>
+            <select className="sort" onChange={e => filterGamesByType(e)}>
+              <option value={"All"}> All Games</option>
+              <option value={"Steam"} > Steam</option>
+              <option value={"PSN"} >PSN</option> 
             </select>
           </div>
           <p className="text"> No results found for: &nbsp; <b> {" "+searchResult}</b> </p>
