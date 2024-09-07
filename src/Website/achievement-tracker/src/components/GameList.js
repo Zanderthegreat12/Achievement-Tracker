@@ -27,44 +27,50 @@ function GamesList({games}){
         setSort(sortFnString);
       }
 
-    const filterGames = (e, type) => {
+    const filterGames = (e, type, sortFnString) => {
       if (e.keyCode === 13){
         let search = e.target.value;
-        findGamebyWord(search, type)
+        findGamebyWord(search, type, sortFnString)
         setsearchResult(search);
         //e.target.value = "";
       }
     }
 
-    const findGamebyWord = (search, type) =>{
+    const findGamebyWord = (search, type, sortFnString) =>{
       if (search !== ""){
         search = search.toLowerCase();
         const filterGames = GAMES.filter((game) => {
           let gameName = game[0].trophyTitleName.toLowerCase();
           return gameName.includes(search);
         })
-        filterGamesByType(type, filterGames)
+        filterGamesByType(type, filterGames, sortFnString)
       } else {
-        filterGamesByType(type, GAMES)
+        filterGamesByType(type, GAMES, sortFnString)
       }
     }
 
-    const filterGamesByType = (type, fg) => {
+    const filterGamesByType = (type, fg, sortFnString) => {
       if (type === "PSN"){
         const filterGames = fg.filter( (game) => {
           return !game[0].hasOwnProperty("totalPlaytime");
         })
+        let sortFn = findSortFn(sortFnString)
+        filterGames.sort((a,b) => sortFn(a,b));
         setfilteredGames(filterGames);
         setgameType("PSN")
       } else if (type === "Steam"){
         const filterGames = fg.filter( (game) => {
           return game[0].hasOwnProperty("totalPlaytime");
         })
+        let sortFn = findSortFn(sortFnString)
+        filterGames.sort((a,b) => sortFn(a,b));
         setfilteredGames(filterGames);
         setgameType("Steam")
       } else {
+        let sortFn = findSortFn(sortFnString)
+        fg.sort((a,b) => sortFn(a,b));
         setfilteredGames(fg);
-        setgameType("add")
+        setgameType("All Games")
       }
     }
 
@@ -76,7 +82,7 @@ function GamesList({games}){
     return (
     <div className = "GameListCSS">
       <div className="sortSelector">
-      <input className="search" onKeyDown={e => {filterGames(e, gameType)}}></input>
+      <input className="search" onKeyDown={e => {filterGames(e, gameType,sort)}}></input>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT--W18wy6a2ieVL6AoUwTx7OwzuY1-ncqVeA&s" width="21px"></img>
         <select className="sort" onChange={e => {SortGames(e.target.value)}}>
           <option value={"recent"}>Recently Earned (Des)</option>
@@ -86,7 +92,7 @@ function GamesList({games}){
           <option value={"per"} >Completion Percent (Des)</option>
           <option value={"perR"}>Completion Percent (Asc)</option>
         </select>
-        <select className="sort" onChange={e => {findGamebyWord(searchResult, e.target.value)}}>
+        <select className="sort" onChange={e => {findGamebyWord(searchResult, e.target.value, sort)}}>
           <option value={"All"}> All Games</option>
           <option value={"Steam"} > Steam</option>
           <option value={"PSN"} >PSN</option> 
@@ -99,7 +105,7 @@ function GamesList({games}){
       return (
         <div className = "GameListCSS">
           <div className="sortSelector">
-            <input className="search" onKeyDown={filterGames}></input>
+            <input className="search" onKeyDown={e => {filterGames(e, gameType, sort)}}></input>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT--W18wy6a2ieVL6AoUwTx7OwzuY1-ncqVeA&s" width="21px"></img>
             <select className="sort"  onChange={e => SortGames(e.target.value)}>
               <option value={"recent"}>Recently Earned (Des)</option>
@@ -109,13 +115,13 @@ function GamesList({games}){
               <option value={"per"} >Completion Percent (Des)</option>
               <option value={"perR"}>Completion Percent (Asc)</option>
             </select>
-            <select className="sort" onChange={e => filterGamesByType(e)}>
+            <select className="sort" onChange={e => {findGamebyWord(searchResult, e.target.value, sort)}}>
               <option value={"All"}> All Games</option>
               <option value={"Steam"} > Steam</option>
               <option value={"PSN"} >PSN</option> 
             </select>
           </div>
-          <p className="text"> No results found for: &nbsp; <b> {" "+searchResult}</b> </p>
+          <p className="text"> No results found for: &nbsp; <b> {" "+searchResult}</b>&nbsp; on &nbsp; <b>{gameType}</b> </p>
           </div>);
     }
   }
