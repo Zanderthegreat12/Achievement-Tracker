@@ -1,12 +1,9 @@
-//import * as PSNapi from "psn-api";
-//import * as fs from 'fs';
-
+import * as PSNapi from "psn-api";
+import * as fs from 'fs';
 
 const Npsso = ""
 
 async function ExtractPSNTrophies(name){
-
-  let PSNapi = require("psn-api")
 
     const accessCode = await PSNapi.exchangeNpssoForCode(Npsso);
     const authorization = await PSNapi.exchangeCodeForAccessToken(accessCode);
@@ -54,19 +51,14 @@ async function ExtractPSNTrophies(name){
     return games;
 }
 
-// const start = async function (){
 // let result = await ExtractPSNTrophies("FeonixKing");
 
-// let fs = require("fs");
-
 // fs.writeFile("games.json", JSON.stringify(result), (err) => {
-//      if (err)
-//        console.log(err);
-//      else {
+//     if (err)
+//       console.log(err);
+//     else {
 //       console.log("File written successfully\n");
-//      }
-//    });
-//   }
+//     }
+//   });
 
-// start();
 export default ExtractPSNTrophies;

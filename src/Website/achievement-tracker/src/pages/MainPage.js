@@ -1,7 +1,12 @@
 import GamesList from "../components/GameList";
+import { useLocation  } from "react-router-dom";
 
-function MainPage({PSNGames, SteamGames}){
-    let Allgames = PSNGames.concat(SteamGames);
+function MainPage(){
+  const location = useLocation();
+  const state = location.state;
+
+  
+  let Allgames = state.PSNGames.concat(state.SteamGames);
 
     return (
         <div className = "Background">

@@ -8,9 +8,10 @@ function GamesList({games}){
     const [filteredGames, setfilteredGames] = useState(games);
     const [searchResult, setsearchResult] = useState("");
     const [gameType, setgameType] = useState("all")
-
     
-    
+    if(games == ""){
+      return ("");
+    }
     
     const gameList = filteredGames.map( (game) => {
         if(game[0].hasOwnProperty("trophySetVersion")){

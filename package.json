@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "express": "^4.21.0",
     "psn-api": "^2.10.1"
   },
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "start": "node src/Website/Server/index.js"
+  }
 }

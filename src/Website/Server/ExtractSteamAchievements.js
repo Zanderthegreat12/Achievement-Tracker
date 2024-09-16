@@ -1,31 +1,31 @@
-//import * as fs from 'fs';
+import * as fs from 'fs';
 
 const steamKey = "";
 
 async function ExtractSteamAchievements(steamId){
 
-    const UserGames = await fetch("http://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+ steamKey+"&steamid="+steamId+"&include_appinfo=true&include_played_free_games=true&format=json")
+    const UserGames = await fetch("http://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+ steamKey+"&steamid="+steamId+"&include_appinfo=true&include_played_free_games=true&format=json", {mode: "no-cors"})
                     .then(UserGames => {return UserGames.json()});
 
     let games = [];    
 
     for(const userGame of UserGames.response.games){
         
-        const GameSchema = await fetch("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?appid="+userGame.appid+"&key=" + steamKey)
+        const GameSchema = await fetch("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?appid="+userGame.appid+"&key=" + steamKey, {mode: "cors"})
             .then(GameSchema => {return GameSchema.json()});
           
             
-        const AchievePercent = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?gameid=" + userGame.appid)
+        const AchievePercent = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?gameid=" + userGame.appid, {mode: "cors"})
             .then(AchievePercent => {return AchievePercent.json()});
            
 
         if(Object.keys(AchievePercent).length !== 0 && AchievePercent.achievementpercentages.achievements.length !== 0){
 
-            const PlayerAchieve = await fetch("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key="+steamKey+"&steamid="+steamId+"&appid=" + userGame.appid)
+            const PlayerAchieve = await fetch("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key="+steamKey+"&steamid="+steamId+"&appid=" + userGame.appid, {mode: "cors"})
                 .then(PlayerAchieve => {return PlayerAchieve.json()});
                 
 
-            const GameInfo = await fetch("https://store.steampowered.com/api/appdetails?appids="+ userGame.appid)
+            const GameInfo = await fetch("https://store.steampowered.com/api/appdetails?appids="+ userGame.appid, {mode: "cors"})
                 .then(GameInfo => {return GameInfo.json()})
                
 
@@ -96,14 +96,14 @@ async function ExtractSteamAchievements(steamId){
     return games;
 }
 
-//let result = await ExtractSteamAchievements("76561198334529069");
+// let result = await ExtractSteamAchievements("76561198334529069");
 
-// fs.writeFile("SteamGames.json", JSON.stringify(result), (err) => {
-//     if (err)
-//       console.log(err);
-//     else {
-//       console.log("File written successfully\n");
-//     }
-//   });
+//  fs.writeFile("SteamGames.json", JSON.stringify(result), (err) => {
+//      if (err)
+//        console.log(err);
+//      else {
+//        console.log("File written successfully\n");
+//      }
+//    });
 
 export default ExtractSteamAchievements;
