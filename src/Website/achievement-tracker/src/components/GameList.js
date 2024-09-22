@@ -84,7 +84,7 @@ function GamesList({games}){
     <div className = "GameListCSS">
       <div className="sortSelector">
       <input className="search" onKeyDown={e => {filterGames(e, gameType,sort)}}></input>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT--W18wy6a2ieVL6AoUwTx7OwzuY1-ncqVeA&s" width="21px"></img>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT--W18wy6a2ieVL6AoUwTx7OwzuY1-ncqVeA&s" width="21px"  crossOrigin="anonymous" referrerPolicy="no-referrer"></img>
         <select className="sort" onChange={e => {SortGames(e.target.value)}}>
           <option value={"recent"}>Recently Earned (Des)</option>
           <option value={"recentR"} >Recently Earned (Asc)</option>
@@ -107,7 +107,7 @@ function GamesList({games}){
         <div className = "GameListCSS">
           <div className="sortSelector">
             <input className="search" onKeyDown={e => {filterGames(e, gameType, sort)}}></input>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT--W18wy6a2ieVL6AoUwTx7OwzuY1-ncqVeA&s" width="21px"></img>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT--W18wy6a2ieVL6AoUwTx7OwzuY1-ncqVeA&s"  crossOrigin="anonymous" referrerPolicy="no-referrer" width="21px"></img>
             <select className="sort"  onChange={e => SortGames(e.target.value)}>
               <option value={"recent"}>Recently Earned (Des)</option>
               <option value={"recentR"} >Recently Earned (Asc)</option>

@@ -3,7 +3,6 @@ import * as fs from 'fs';
 const steamKey = "";
 
 async function ExtractSteamAchievements(steamId){
-
     const UserGames = await fetch("http://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+ steamKey+"&steamid="+steamId+"&include_appinfo=true&include_played_free_games=true&format=json", {mode: "no-cors"})
                     .then(UserGames => {return UserGames.json()});
 
@@ -11,21 +10,21 @@ async function ExtractSteamAchievements(steamId){
 
     for(const userGame of UserGames.response.games){
         
-        const GameSchema = await fetch("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?appid="+userGame.appid+"&key=" + steamKey, {mode: "cors"})
+        const GameSchema = await fetch("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?appid="+userGame.appid+"&key=" + steamKey)
             .then(GameSchema => {return GameSchema.json()});
           
             
-        const AchievePercent = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?gameid=" + userGame.appid, {mode: "cors"})
+        const AchievePercent = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?gameid=" + userGame.appid)
             .then(AchievePercent => {return AchievePercent.json()});
            
 
         if(Object.keys(AchievePercent).length !== 0 && AchievePercent.achievementpercentages.achievements.length !== 0){
 
-            const PlayerAchieve = await fetch("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key="+steamKey+"&steamid="+steamId+"&appid=" + userGame.appid, {mode: "cors"})
+            const PlayerAchieve = await fetch("https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key="+steamKey+"&steamid="+steamId+"&appid=" + userGame.appid)
                 .then(PlayerAchieve => {return PlayerAchieve.json()});
                 
 
-            const GameInfo = await fetch("https://store.steampowered.com/api/appdetails?appids="+ userGame.appid, {mode: "cors"})
+            const GameInfo = await fetch("https://store.steampowered.com/api/appdetails?appids="+ userGame.appid)
                 .then(GameInfo => {return GameInfo.json()})
                
 

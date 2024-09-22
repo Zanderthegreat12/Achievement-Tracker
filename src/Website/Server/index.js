@@ -1,5 +1,6 @@
 //import ExtractPSNTrophies from "../achievement-tracker/src/Data/ExtractPSNTrophies.js";
 import ExtractSteamAchievements from "./ExtractSteamAchievements.js";
+import ExtractPSNTrophies from "./ExtractPSNTrophies.js";
 import express from "express"
 
 
@@ -20,9 +21,22 @@ app.get("/test", async function(req, res) {
     res.json(result);
 })
 
+app.get("/test2", async function(req, res) {
+    const result = await ExtractPSNTrophies("FeonixKing");
+    res.json(result);
+})
 
 app.get("/SteamGames/:userName", async function(req, res) {
-    const result = await ExtractSteamAchievements(req.params.userName);
+    try{
+        const result = await ExtractSteamAchievements(req.params.userName)
+        res.json(result);
+    } catch {
+        res.json({ Error: "Invalid UserName" });
+    }
+})
+
+app.get("/PSNGames/:userName", async function(req, res) {
+    const result = await ExtractPSNTrophies(req.params.userName);
     res.json(result);
 })
 

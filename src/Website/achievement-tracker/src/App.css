@@ -12,7 +12,6 @@
   align-items: center;
   content: "";
   display: flex;  
-
 }
 
 .GameOverviewAchievePage{
@@ -229,4 +228,115 @@ body{
   font-family: sans-serif;
   border-radius: 10px;
   margin-bottom: 10px;
+}
+
+.LoginSect{
+  display: flex;
+  align-items: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.LoginChild{
+  background-color: rgb(63, 63, 63);
+  color: white;
+  width: 560px;
+  padding: 10px;  
+  border-radius: 20px;
+  margin: 10px;
+  border: solid 3px rgb(50, 50, 235);
+  font-weight: bold;
+}
+
+.LoginName{
+  width: 140px;
+  display: flex;
+}
+
+.LoginHelpParent{
+  padding-bottom: 10px;
+  width: 10px;
+}
+
+.LoginHelp{
+  background-color: black;
+  border: solid 1px black;
+  font-size: 8px;
+  border-radius: 50px;
+  width: 10px;
+  text-align: center;
+  cursor: default;
+  top: -10px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.LoginButton{
+  background-color: rgb(36, 36, 36);
+  border: solid 2px rgb(50, 50, 235);
+  color: white;
+  border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.LoginButton:hover{
+  background-color: rgb(117, 202, 202);
+}
+
+.LoginButtonMain{
+  justify-content: center;
+  align-items: center;
+  content: "";
+  display: flex;
+}
+
+.LoginButtonMainPage{
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: rgb(36, 36, 36);
+  border: solid 2px rgb(50, 50, 235);
+  color: white;
+  border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 20px;
+}
+
+.LoginText{
+  font-weight: lighter;
+  text-align: center;
+}
+
+.LoadingDots-loader{
+  display: flex;
+}
+
+.LoadingDots-loader > div {
+  width: 8px;
+  height: 8px;
+  margin: 3px 3px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background-color: rgb(96, 96, 168);
+  align-items: center;
+  opacity: 1;
+  animation: bouncing-loader 0.6s infinite alternate;
+}
+
+@keyframes bouncing-loader {
+  to {
+    opacity: 0.2;
+  }
+}
+
+.LoadingDots-loader > div:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.LoadingDots-loader > div:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+body{
+  background-color: black;
 }
