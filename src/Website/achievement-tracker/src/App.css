@@ -290,6 +290,10 @@ body{
   display: flex;
 }
 
+.LoginButtonMainPage:hover{
+  background-color: rgb(117, 202, 202);
+}
+
 .LoginButtonMainPage{
   margin-top: 20px;
   margin-bottom: 10px;

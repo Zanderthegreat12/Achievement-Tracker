@@ -27,6 +27,9 @@ async function ExtractSteamAchievements(steamId){
             const GameInfo = await fetch("https://store.steampowered.com/api/appdetails?appids="+ userGame.appid)
                 .then(GameInfo => {return GameInfo.json()})
                
+            if(GameInfo[userGame.appid].success === false){
+                continue;
+            }
 
             let gameAchievements = [];
 
@@ -34,7 +37,7 @@ async function ExtractSteamAchievements(steamId){
             let mostRecentAchieve = 0;
 
 
-            for (const achieve of GameSchema.game.availableGameStats.achievements){
+            for (const achieve of GameSchema.game.availableGameStats.achievements) {
 
                 const singleAchievePercent = AchievePercent.achievementpercentages.achievements.find(
                     (t) => achieve.name === t.name);
@@ -69,6 +72,7 @@ async function ExtractSteamAchievements(steamId){
                 if (mostRecentAchieve !== 0){
                 let percentage = Math.floor(totalAchieve / Number(GameSchema.game.availableGameStats.achievements.length) * 100);
 
+                
                 let name = GameInfo[userGame.appid].data.name;
                 let url = GameInfo[userGame.appid].data.header_image;
 
@@ -89,13 +93,12 @@ async function ExtractSteamAchievements(steamId){
                 games.push(gameInfo);
             }
         }
-
     }
 
     return games;
 }
 
-// let result = await ExtractSteamAchievements("76561198334529069");
+ //let result = await ExtractSteamAchievements("76561198308745448");
 
 //  fs.writeFile("SteamGames.json", JSON.stringify(result), (err) => {
 //      if (err)
