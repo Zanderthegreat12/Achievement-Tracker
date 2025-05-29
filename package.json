@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "express": "^4.21.0",
+    "mongodb": "^6.16.0",
     "psn-api": "^2.10.1"
   },
   "type": "module",

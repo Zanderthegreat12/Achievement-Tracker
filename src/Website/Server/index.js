@@ -1,12 +1,7 @@
-//import ExtractPSNTrophies from "../achievement-tracker/src/Data/ExtractPSNTrophies.js";
 import ExtractSteamAchievements from "./ExtractSteamAchievements.js";
 import ExtractPSNTrophies from "./ExtractPSNTrophies.js";
 import express from "express"
-
-
-//const Steam = require("./ExtractSteamAchievements.js")
-
-//const express = require("express");
+import {getGames, putGames}  from "./Storage.js"
 
 const PORT = process.env.PORT || 3001;
 
@@ -28,7 +23,10 @@ app.get("/test2", async function(req, res) {
 
 app.get("/SteamGames/:userName", async function(req, res) {
     try{
-        const result = await ExtractSteamAchievements(req.params.userName)
+        var result = await getGames(req.params.userName);
+        if (result == null){
+            result = await putGames(req.params.userName, ExtractSteamAchievements);
+        }
         res.json(result);
     } catch {
         res.json({ Error: "Invalid UserName" });
@@ -36,7 +34,10 @@ app.get("/SteamGames/:userName", async function(req, res) {
 })
 
 app.get("/PSNGames/:userName", async function(req, res) {
-    const result = await ExtractPSNTrophies(req.params.userName);
+    var result = await getGames(req.params.userName);
+    if (result == null){
+        result = await putGames(req.params.userName, ExtractPSNTrophies);
+    }
     res.json(result);
 })
 

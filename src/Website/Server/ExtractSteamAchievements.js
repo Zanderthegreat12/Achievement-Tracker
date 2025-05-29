@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-const steamKey = "F11C2C0221F383786E355EECEFD16FE2";
+const steamKey = "";
 
 async function ExtractSteamAchievements(steamId){
     const UserGames = await fetch("http://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+ steamKey+"&steamid="+steamId+"&include_appinfo=true&include_played_free_games=true&format=json", {mode: "no-cors"})
